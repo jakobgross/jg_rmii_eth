@@ -1,0 +1,53 @@
+# ==============================================================================
+# Vivado generated files
+# ==============================================================================
+
+# Project directories (recreated by build.tcl)
+example/vivado/
+example/vitis/
+
+# Vivado IP packager temporary project
+*.cache/
+*.hw/
+*.sim/
+*.ip_user_files/
+
+# Vivado build artifacts
+*.jou
+*.log
+*.str
+*edit*.xpr
+*.pb
+*.dcp
+*.xdc.bak
+*.bit
+*.ltx
+*.mcs
+*.prm
+*.rpt
+*.xsa
+vivado_pid*.str
+
+# Vitis workspace (recreated by vitis_create.tcl)
+*.sdk/
+*.vitis/
+
+# ==============================================================================
+# GHDL / simulation
+# ==============================================================================
+work/
+*.o
+*.cf
+*.ghw
+*.vcd
+
+# ==============================================================================
+# SymbiYosys
+# ==============================================================================
+*_bmc/
+*_prove/
+*_cover/
+*.smt2
+*.il
+*.aig
+

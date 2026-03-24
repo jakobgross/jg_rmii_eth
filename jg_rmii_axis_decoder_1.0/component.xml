@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>jakobgross</spirit:vendor>
+  <spirit:library>hft</spirit:library>
+  <spirit:name>jg_rmii_axis_decoder</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>clk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>clk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.CLK.ASSOCIATED_BUSIF">m_axis</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.CLK.ASSOCIATED_RESET">resetn</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>m_axis</spirit:name>
+      <spirit:displayName>m_axis</spirit:displayName>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TKEEP</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tkeep</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tlast</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>m_axis_tready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>resetn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>resetn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.RESETN.POLARITY" spirit:choiceRef="choice_list_74b5137e">ACTIVE_LOW</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_xpgui</spirit:name>
+        <spirit:displayName>UI Layout</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:xgui.ui</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_xpgui_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>f64a5dae</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>bd_tcl</spirit:name>
+        <spirit:displayName>Block Diagram</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:block.diagram</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>bd_tcl_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>16328387</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_vhdlsynthesis</spirit:name>
+        <spirit:displayName>VHDL Synthesis</spirit:displayName>
+        <spirit:envIdentifier>vhdlSource:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>vhdl</spirit:language>
+        <spirit:modelName>jg_rmii_axis_decoder</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_vhdlsynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>8dcff5b5</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_vhdlbehavioralsimulation</spirit:name>
+        <spirit:displayName>VHDL Simulation</spirit:displayName>
+        <spirit:envIdentifier>vhdlSource:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>vhdl</spirit:language>
+        <spirit:modelName>jg_rmii_axis_decoder</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>8dcff5b5</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>clk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>resetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rmii_crs_dv</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rmii_rxd</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tkeep</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">1</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>words_dropped_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">15</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+  </spirit:model>
+  <spirit:choices>
+    <spirit:choice>
+      <spirit:name>choice_list_74b5137e</spirit:name>
+      <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
+      <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
+    </spirit:choice>
+  </spirit:choices>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>xgui/jg_rmii_axis_decoder_v1_0.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_f64a5dae</spirit:userFileType>
+        <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>bd_tcl_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>bd/bd.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_vhdlsynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>hdl/jg_rmii_to_bytes.vhd</spirit:name>
+        <spirit:userFileType>vhdlSource-2008</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>hdl/jg_eth_crc.vhd</spirit:name>
+        <spirit:userFileType>vhdlSource-2008</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>hdl/jg_rmii_axis_decoder.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_4e28c57f</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>hdl/jg_rmii_to_bytes.vhd</spirit:name>
+        <spirit:userFileType>vhdlSource-2008</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>hdl/jg_eth_crc.vhd</spirit:name>
+        <spirit:userFileType>vhdlSource-2008</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>hdl/jg_rmii_axis_decoder.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>My new AXI IP</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">jg_rmii_axis_decoder_v1_0</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:supportedFamilies>
+        <xilinx:family xilinx:lifeCycle="Pre-Production">zynq</xilinx:family>
+      </xilinx:supportedFamilies>
+      <xilinx:taxonomies>
+        <xilinx:taxonomy>/AXI_Peripheral</xilinx:taxonomy>
+        <xilinx:taxonomy>/Communication_&amp;_Networking</xilinx:taxonomy>
+        <xilinx:taxonomy>/Communication_&amp;_Networking/Ethernet</xilinx:taxonomy>
+        <xilinx:taxonomy>/Communication_&amp;_Networking/Serial_Interfaces</xilinx:taxonomy>
+      </xilinx:taxonomies>
+      <xilinx:displayName>jg_rmii_axis_decoder_v1.0</xilinx:displayName>
+      <xilinx:vendorDisplayName>Jakob GroÃŸ</xilinx:vendorDisplayName>
+      <xilinx:vendorURL>https://github.com/jakobgross</xilinx:vendorURL>
+      <xilinx:coreRevision>1</xilinx:coreRevision>
+      <xilinx:upgrades>
+        <xilinx:canUpgradeFrom>xilinx.com:user:jg_rmii_axis_decoder:1.0</xilinx:canUpgradeFrom>
+      </xilinx:upgrades>
+      <xilinx:coreCreationDateTime>2026-03-23T23:36:56Z</xilinx:coreCreationDateTime>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@64b89f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ebfe9b_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1682924f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4814d191_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6c963428_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6366a112_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@50b3075e_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b22dda1_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@61763885_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@26af6b85_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4d63d610_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@64f0242f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@118c7408_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5c2074fb_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a331b59_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3bc2de78_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7aa9193b_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5fcc3c17_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@190d7926_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6dda11a8_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6bd49b2c_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56e0a1b8_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b99655_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5dbf85de_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@716eba4f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3581942f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6321f797_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@550c2d68_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@65c7b58e_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3aeaed46_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@d160e52_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6a463c33_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73580de7_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2424b2ef_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6ab1e3d9_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5863f014_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3dca454_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7a6565_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2414ad32_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49c7566d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@550a60eb_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6d969b0d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@62edff5b_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@30b95a4_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@34756e13_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d159674_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@25236c39_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@45f14255_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4963eb76_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d05e534_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6760d593_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ec2edd1_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f9dd333_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@949f54a_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@276ae109_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7f217171_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@535ec1d4_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73db075a_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49ae0a98_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@58e557a9_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@300e86ca_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@fb52c84_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@69b5a631_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1f34713f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6c50c01b_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2503a6d8_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@32c4d22d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39cdf2c7_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@979ab42_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36ed482_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@fe5f982_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3da4592d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4a4d3c6d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7f6b6ad3_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7e260fe8_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@35f060f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5909e7f5_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56c75cec_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2de8e6fc_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@717ff665_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@536bfb67_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@481cf4af_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@581c9d49_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36777b8a_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1003886c_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@60c5bdf0_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@24f89069_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5da27051_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2416fc27_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4b144f61_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@54867a78_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@35adb202_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1425e2f6_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@367a3e89_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2dcb3c_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@74c52192_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@57a358c3_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c42a5f1_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5e005c53_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29f17227_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@654f2a79_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3d8e2422_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@141d526f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2025acdb_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2697a883_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@65387c09_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4ab3dfcc_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4c3222f4_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@269d92db_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1a5da67b_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@41487140_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5ba9cbdf_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1b4bdaf5_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@16f1e45_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_rmii_axis_decoder_1.0</xilinx:tag>
+      </xilinx:tags>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2021.2.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="a607ece3"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="01579f85"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="dd1c7729"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="0aac5352"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>
