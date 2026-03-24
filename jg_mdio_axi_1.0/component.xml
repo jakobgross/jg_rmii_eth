@@ -316,7 +316,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>bd2b25e8</spirit:value>
+            <spirit:value>7c960a72</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -331,7 +331,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>bd2b25e8</spirit:value>
+            <spirit:value>7c960a72</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -820,19 +820,19 @@
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
         <spirit:name>hdl/jg_mdio_ctrl.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>vhdlSource-2008</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/jg_mdio_axi_v1_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_a7cede00</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_eb7aa27b</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
         <spirit:name>hdl/jg_mdio_ctrl.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>vhdlSource-2008</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/jg_mdio_axi_v1_0.vhd</spirit:name>
@@ -912,11 +912,11 @@
       <xilinx:displayName>jg_mdio_axi_v1.0</xilinx:displayName>
       <xilinx:vendorDisplayName>Jakob GroÃŸ</xilinx:vendorDisplayName>
       <xilinx:vendorURL>https://github.com/jakobgross</xilinx:vendorURL>
-      <xilinx:coreRevision>3</xilinx:coreRevision>
+      <xilinx:coreRevision>7</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>xilinx.com:user:jg_mdio_axi:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2026-03-24T19:14:42Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2026-03-24T20:42:03Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@748c8898_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@cca6b94_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
@@ -998,13 +998,46 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@49bcedec_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@16274da_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@4048aa6a_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ccb0f2f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@59c673d8_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@63fecb7f_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39940083_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7921d86d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7db05f4a_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6579dfd_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@45c8035a_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@69d15a77_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2ad02512_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@55145f8c_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@576c7625_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4006b4da_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5211c809_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5dac70df_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@492a4db_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1bfb527e_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@ffedd81_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@460aa678_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@35b10a47_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3ae4cb71_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@112c13e7_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2757aee7_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@208a21e6_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@68356c59_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@61f2f8c4_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c64b23e_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@431b186_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5d61269d_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4e544fa8_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5de2f7ab_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7a4a5d96_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@40a3ed34_ARCHIVE_LOCATION">d:/git/jg_zybo_tick_to_trade/jg_rmii_eth/jg_mdio_axi_1.0</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="d5d86bed"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="a731da92"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="7c09c74c"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="9e076dc6"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="9f7dd37d"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="718ed618"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="d5a9cbaf"/>

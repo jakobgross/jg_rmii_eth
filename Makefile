@@ -1,48 +1,61 @@
-# ==============================================================================
-# jg_rmii_eth Makefile
-# ==============================================================================
+VIVADO    := vivado
+XSCT      := xsct
+PYTHON    := python3
 
-VIVADO     ?= vivado
-PYTHON     ?= python3
-VUNIT_RUN  ?= $(PYTHON) -m vunit.ui
+# Example project paths
+PROJ_DIR  := example/vivado
+PROJ_NAME := vivado
 
-# IP directories
-IP_MDIO    := jg_mdio_axi_1.0
-IP_RMII    := jg_rmii_axis_decoder_1.0
+BITSTREAM := $(PROJ_DIR)/$(PROJ_NAME).runs/impl_1/block_design_wrapper.bit
+XSA       := example/sw/top.xsa
 
-# HDL sources
-SRC_MDIO   := $(IP_MDIO)/hdl/jg_mdio_ctrl.vhd \
-              $(IP_MDIO)/hdl/jg_mdio_axi.vhd
+.PHONY: all project bitstream xsa vitis vitis_update program sim sim_mdio sim_rmii formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis clean help
 
-SRC_RMII   := $(IP_RMII)/hdl/jg_rmii_to_bytes.vhd \
-              $(IP_RMII)/hdl/jg_eth_crc.vhd \
-              $(IP_RMII)/hdl/jg_rmii_axis_decoder.vhd
+all: project bitstream xsa vitis
 
 # ==============================================================================
-# Default target
+# Example project
 # ==============================================================================
-.PHONY: all
-all: help
+
+project:
+	$(VIVADO) -mode batch -source scripts/build.tcl \
+		-tclargs --origin_dir scripts
+
+bitstream:
+	$(VIVADO) -mode batch -source scripts/bitstream.tcl \
+		-tclargs $(PROJ_NAME) $(PROJ_DIR)
+
+xsa:
+	$(VIVADO) -mode batch -source scripts/export_hw.tcl \
+		-tclargs --origin_dir scripts
+
+program:
+	$(VIVADO) -mode batch -source scripts/program.tcl \
+		-tclargs $(BITSTREAM)
+
+vitis:
+	$(XSCT) scripts/vitis_create.tcl
+
+vitis_update:
+	$(XSCT) scripts/vitis_update.tcl
 
 # ==============================================================================
 # Simulation (VUnit)
 # ==============================================================================
-.PHONY: sim sim_mdio sim_rmii
 
 sim: sim_mdio sim_rmii
 
 sim_mdio:
 	@echo "[TODO] VUnit simulation for jg_mdio_axi not yet implemented"
-	@echo "       Add run.py in sim/ and invoke: $(VUNIT_RUN) sim/run.py"
+	@echo "       Add run.py in sim/ and invoke: $(PYTHON) sim/run.py"
 
 sim_rmii:
 	@echo "[TODO] VUnit simulation for jg_rmii_axis_decoder not yet implemented"
-	@echo "       Add run.py in sim/ and invoke: $(VUNIT_RUN) sim/run.py"
+	@echo "       Add run.py in sim/ and invoke: $(PYTHON) sim/run.py"
 
 # ==============================================================================
 # Formal verification (SymbiYosys)
 # ==============================================================================
-.PHONY: formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis
 
 formal: formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis
 
@@ -63,34 +76,31 @@ formal_rmii_axis:
 	@echo "       Add formal/jg_rmii_axis_decoder.sby and invoke: sby -f formal/jg_rmii_axis_decoder.sby"
 
 # ==============================================================================
-# Example project
-# ==============================================================================
-.PHONY: example
-
-example:
-	cd example && $(VIVADO) -mode batch -source build.tcl
-
-# ==============================================================================
 # Clean
 # ==============================================================================
-.PHONY: clean
 
 clean:
-	rm -rf example/vivado
-	rm -rf example/vitis
+	rm -rf example/vivado/ example/vitis/
+	rm -f vivado.jou vivado.log
 	find . -name "*.log" -delete
 	find . -name "*.jou" -delete
 
 # ==============================================================================
 # Help
 # ==============================================================================
-.PHONY: help
 
 help:
 	@echo ""
 	@echo "jg_rmii_eth"
 	@echo ""
 	@echo "Targets:"
+	@echo "  all              Run project, bitstream, xsa and vitis in sequence"
+	@echo "  project          Recreate Vivado example project from scripts/build.tcl"
+	@echo "  bitstream        Run synthesis, implementation and generate bitstream"
+	@echo "  xsa              Export hardware description to example/sw/top.xsa"
+	@echo "  vitis            Recreate Vitis workspace from example/vitis_create.tcl"
+	@echo "  vitis_update     Update sources in existing Vitis workspace and rebuild"
+	@echo "  program          Program the board via JTAG (requires bitstream)"
 	@echo "  sim              Run all VUnit simulations"
 	@echo "  sim_mdio         Run VUnit simulation for jg_mdio_axi"
 	@echo "  sim_rmii         Run VUnit simulation for jg_rmii_axis_decoder"
@@ -99,10 +109,20 @@ help:
 	@echo "  formal_rmii_to_bytes  Run SymbiYosys proof for jg_rmii_to_bytes"
 	@echo "  formal_eth_crc   Run SymbiYosys proof for jg_eth_crc"
 	@echo "  formal_rmii_axis Run SymbiYosys proof for jg_rmii_axis_decoder"
-	@echo "  example          Build example Vivado project"
-	@echo "  clean            Remove generated files"
+	@echo "  clean            Remove all generated build artifacts"
+	@echo ""
+	@echo "Typical workflow:"
+	@echo "  1. make project          -- recreate example project"
+	@echo "  2. Open $(PROJ_DIR)/$(PROJ_NAME).xpr in Vivado GUI"
+	@echo "  3. Make changes interactively"
+	@echo "  4. In Vivado Tcl console:"
+	@echo "       cd [get_property DIRECTORY [current_project]]   "
+	@echo "       write_project_tcl -force ../../scripts/build.tcl"
+	@echo "  5. make bitstream        -- build bitstream non-interactively"
+	@echo "  6. make program          -- program the board"
 	@echo ""
 	@echo "Variables:"
 	@echo "  VIVADO           Path to Vivado executable (default: vivado)"
+	@echo "  XSCT             Path to XSCT executable (default: xsct)"
 	@echo "  PYTHON           Python interpreter (default: python3)"
 	@echo ""

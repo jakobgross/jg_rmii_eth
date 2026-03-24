@@ -219,8 +219,11 @@ begin
 
             when START =>
                 mdio_t <= '0';
-                mdio_o <= '0' when r.bit_cnt = to_unsigned(0, 5) else
-                    '1';
+                if r.bit_cnt = to_unsigned(0, 5) then
+                    mdio_o <= '0';
+                else
+                    mdio_o <= '1';
+                end if;
                 if mdc_fall_p = '1' then
                     if r.bit_cnt = to_unsigned(1, 5) then
                         rin.bit_cnt <= (others => '0');
@@ -234,11 +237,17 @@ begin
             when OPCODE =>
                 mdio_t <= '0';
                 if r.wr_en = '1' then
-                    mdio_o <= '0' when r.bit_cnt = to_unsigned(0, 5) else
-                        '1';
+                    if r.bit_cnt = to_unsigned(0, 5) then
+                        mdio_o <= '0';
+                    else
+                        mdio_o <= '1';
+                    end if;
                 else
-                    mdio_o <= '1' when r.bit_cnt = to_unsigned(0, 5) else
-                        '0';
+                    if r.bit_cnt = to_unsigned(0, 5) then
+                        mdio_o <= '1';
+                    else
+                        mdio_o <= '0';
+                    end if;
                 end if;
                 if mdc_fall_p = '1' then
                     if r.bit_cnt = to_unsigned(1, 5) then
@@ -280,8 +289,11 @@ begin
             when TURNAROUND =>
                 if r.wr_en = '1' then
                     mdio_t <= '0';
-                    mdio_o <= '1' when r.bit_cnt = to_unsigned(0, 5) else
-                        '0';
+                    if r.bit_cnt = to_unsigned(0, 5) then
+                        mdio_o <= '1';
+                    else
+                        mdio_o <= '0';
+                    end if;
                 else
                     mdio_t <= '1';
                     -- Check PHY drives '0' on the second turnaround bit.

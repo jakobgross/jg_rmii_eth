@@ -194,14 +194,17 @@ begin
 
                 -- Transaction complete
                 if mdio_rd_valid = '1' then
+                    if  r.ta_err_seen = '1' then
+                        rin.bresp  <= "10";
+                    else
+                        rin.bresp  <="00";
+                    end if;
                     if r.is_write = '1' then
                         rin.bvalid <= '1';
-                        rin.bresp  <= "10" when r.ta_err_seen = '1' else "00";
                         rin.state  <= WR_RESP;
                     else
                         rin.rdata  <= x"0000" & mdio_rd_data;
                         rin.rvalid <= '1';
-                        rin.rresp  <= "10" when r.ta_err_seen = '1' else "00";
                         rin.state  <= RD_RESP;
                     end if;
                 end if;
