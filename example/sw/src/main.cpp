@@ -1,27 +1,30 @@
 /*
  * main.c - jg_rmii_eth example application
  *
- * Demonstrates:
- *   - LAN8720 PHY register readback via jg_mdio_axi
- *   - Raw Ethernet frame capture via AXI DMA scatter-gather (S2MM only)
- *   - LED status indication via GPIO
- *   - Words-dropped counter readback via GPIO
+ * Demonstrates end-to-end Ethernet frame reception on the Digilent Zybo Z7-20
+ * using the LAN8720 PHY over RMII. Frames are captured via AXI DMA scatter-
+ * gather and decoded on the PS.
  *
  * Peripherals:
  *   DMA        0x40400000  AXI DMA (scatter-gather, S2MM only)
  *   GPIO0      0x41200000  4-bit LED output
- *   GPIO1      0x41210000  16-bit words_dropped input
- *   MDIO_AXI   0x43C00000  jg_mdio_axi (PHY addr 1, addr[6:2] = reg index)
+ *   GPIO1      0x41210000  16-bit words_dropped input (from jg_rmii_axis_decoder)
+ *   MDIO_AXI   0x43C00000  jg_mdio_axi (PHY addr 1, AXI addr bits [6:2] = MDIO reg)
  *
  * Main loop:
- *   - Poll DMA for completed frames, print bytes and TUSER status over UART
- *   - Read MDIO BSR every second, print on change
+ *   - Poll AXI DMA S2MM for completed frames
+ *   - Decode and print each frame: Ethernet header, IP/ARP/IPv6, UDP/TCP payload
+ *   - Poll MDIO BSR every second, print PHY link status on change
  *
  * LED mapping:
  *   LED[0]  PHY link up (BSR bit 2)
  *   LED[1]  Frame received (toggles per frame)
- *   LED[2]  CRC error seen (TUSER = 1 on last beat)
- *   LED[3]  Words dropped > 0
+ *   LED[2]  CRC error (TUSER=1 on last AXI-Stream beat)
+ *   LED[3]  Words dropped > 0 (back-pressure overflow in jg_rmii_axis_decoder)
+ *
+ * Test frame from Linux machine (Scapy):
+ *   sudo python3 -c "from scapy.all import *; \
+ *     sendp(Ether()/IP(dst='255.255.255.255')/UDP()/b'hello world', iface='eth0')"
  */
 
 #include <stdio.h>

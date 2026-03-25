@@ -1,19 +1,21 @@
 # jg_rmii_eth
 
-LAN8720 MDIO controller and RMII-to-AXI-Stream decoder for Xilinx Zynq-7000, packaged as Vivado IPs. Includes frame detection and CRC-32 checking. Example project targets the Digilent Zybo Z7-20.
+MDIO AXI controller and RMII-to-AXI-Stream decoder for Xilinx Zynq-7000, packaged as Vivado IPs. Includes frame detection and CRC-32 checking. Receive only. Example project targets the Digilent Zybo Z7-20.
+
+Developed and tested with Vivado 2021.2 and Vitis 2021.2.
 
 ## Status
 
-### jg_lan8720_mdio
+### jg_mdio_axi
 
 - [x] MDIO controller (`jg_mdio_ctrl`)
 - [x] MDIO controller testbench
 - [x] LAN8720 readback module (`jg_lan8720_readback`)
 - [x] LAN8720 bring-up state machine (`jg_lan8720_ctrl`)
 - [x] LAN8720 ctrl testbench
-- [ ] VUnit simulation flow
+- [ ] VUnit or CocoTB simulation flow
 - [ ] Formal verification (SymbiYosys)
-- [ ] Packaged as Vivado IP
+- [x] Packaged as Vivado IP
 
 ### jg_rmii_axis_decoder
 
@@ -22,48 +24,56 @@ LAN8720 MDIO controller and RMII-to-AXI-Stream decoder for Xilinx Zynq-7000, pac
 - [x] CRC-32 engine and FCS stripper (`jg_eth_crc`)
 - [x] 32-bit AXI-Stream word builder (`jg_rmii_axis_decoder`)
 - [x] `jg_rmii_axis_decoder` testbench (good frame, bad CRC, back-pressure, stress)
-- [ ] VUnit simulation flow
-- [ ] Formal verification — `jg_rmii_to_bytes`
-- [ ] Formal verification — `jg_eth_crc`
-- [ ] Formal verification — `jg_rmii_axis_decoder` (AXI-Stream PSL properties)
-- [ ] Packaged as Vivado IP
+- [ ] VUnit or CocoTB simulation flow
+- [ ] Formal verification - `jg_rmii_to_bytes`
+- [ ] Formal verification - `jg_eth_crc`
+- [ ] Formal verification - `jg_rmii_axis_decoder` (AXI-Stream PSL properties)
+- [x] Packaged as Vivado IP
 
 ### Example Project
 
-- [ ] Vivado block design (TCL script)
-- [ ] Vitis bare-metal application
-- [ ] Running on hardware: MDIO polling over UART
-- [ ] Running on hardware: AXI DMA scatter-gather frame capture over UART
+- [x] Vivado block design (TCL script)
+- [x] Vitis bare-metal application
+- [x] Running on hardware: MDIO polling over UART
+- [x] Running on hardware: AXI DMA scatter-gather frame capture over UART
+
+> **Simulation framework:** I have not yet decided on VUnit or CocoTB. I will choose whatever sparks more interest in me in the next weeks.
 
 ---
-
-## Hardware Setup
 
 ### Components
 
 - Digilent Zybo Z7-20
 - Waveshare LAN8720 ETH Board
 
-### Wiring — LAN8720 to PMOD JE
+### Wiring - LAN8720 to PMOD JE
 
-The Waveshare LAN8720 board is connected **upside down** to PMOD JE so that the RJ45 connector faces away from the board and the module sits flush without mechanical interference.
+The Waveshare LAN8720 board is connected **upside down** to PMOD JE. Mounted this way the VCC and GND pins of the module align correctly with the PMOD power rails. The TX pins of the LAN8720 remain unconnected.
 
-| PMOD JE Pin | Package Pin | Signal      | Direction | LAN8720 Pin          |
-| ----------- | ----------- | ----------- | --------- | -------------------- |
-| JE2         | W16         | RXD[1]      | In        | RXD1                 |
-| JE3         | J15         | CRS_DV      | In        | CRS_DV               |
-| JE4         | H15         | MDC         | Out       | MDC                  |
-| JE8         | U17         | RXD[0]      | In        | RXD0                 |
-| JE9         | T17         | nINT/REFCLK | In        | nINT/REFCLK (50 MHz) |
-| JE10        | Y17         | MDIO        | Bidir     | MDIO                 |
+> **Note:** This project is receive-only (RX). No Ethernet frames are transmitted by the FPGA.
 
-**PHY SMI address: 1** — The Waveshare board pulls RXER/PHYAD0 high via a resistor to VCC, setting the PHY address to 1 (not the default 0).
+| PMOD JE Pin | Package Pin | Signal        | Direction | LAN8720 Pin  |
+|-------------|-------------|---------------|-----------|--------------|
+| JE2         | W16         | RXD[1]        | In        | RXD1         |
+| JE3         | J15         | CRS_DV        | In        | CRS_DV       |
+| JE4         | H15         | MDC           | Out       | MDC          |
+| JE8         | U17         | RXD[0]        | In        | RXD0         |
+| JE9         | T17         | nINT/REFCLK   | In        | nINT/REFCLK (50 MHz) |
+| JE10        | Y17         | MDIO          | Bidir     | MDIO         |
 
-**MODE[2:0] = 111** — RXD0, RXD1 and CRS_DV are pulled high internally, enabling auto-negotiation. No BCR write required.
+**PHY SMI address: 1** - The Waveshare board pulls RXER/PHYAD0 high via a resistor to VCC, setting the PHY address to 1 (not the default 0).
+
+**MODE[2:0] = 111** - RXD0, RXD1 and CRS_DV are pulled high internally, enabling auto-negotiation. No BCR write required.
 
 ### Linux Test Machine
 
 Any Linux machine with a spare Ethernet port connected directly to the Zybo LAN8720 via a straight-through cable. Auto-MDIX handles polarity automatically. No switch or router required. The interface must not be managed by NetworkManager during testing.
+
+Scapy must be installed:
+
+```bash
+pip install scapy
+```
 
 ```sh
 # Bring up the interface without IP assignment
@@ -76,28 +86,152 @@ sendp(Ether(dst='ff:ff:ff:ff:ff:ff')/IP(dst='255.255.255.255')/UDP()/b'hello', i
 "
 ```
 
+
+---
+
+## Architecture
+
+### Block Overview
+
+![Block Overview](doc/BD.png)
+
+### Vivado Block Design
+
+![Vivado Block Design](doc/vivadoBd.png)
+Example Project Vivado IP Integrator block design
+
+---
+
+## Build
+
+### Make targets
+
+Vivado targets (`project`, `bitstream`, `xsa`) require Vivado on the system PATH. Vitis targets (`vitis`, `vitis_update`) require XSCT on the system PATH. Source the appropriate settings script from your installation directory before running make:
+
+```bash
+# Linux
+source <vivado_install_dir>/settings64.sh
+
+# Windows
+call <vivado_install_dir>\settings64.bat
+```
+
+
+
+```
+make project          Recreate Vivado example project from scripts/build.tcl
+make bitstream        Run synthesis, implementation and generate bitstream
+make xsa              Export hardware description to example/sw/top.xsa
+make vitis            Recreate Vitis workspace from scripts/vitis_create.tcl
+make vitis_update     Update sources in existing Vitis workspace and rebuild
+make sim              Run all simulations
+make formal           Run all SymbiYosys proofs
+make clean            Remove all generated build artifacts
+```
+
+Run `make help` for the full target list and variable overrides.
+
+### Saving changes back to the repository
+
+After making changes interactively in Vivado, regenerate `scripts/build.tcl` from the Vivado Tcl console (run from inside `example/vivado/jg_rmii_eth_example/`):
+
+```tcl
+write_project_tcl -force \
+    -target_proj_dir example/vivado \
+    -origin_dir_override scripts \
+    ../../scripts/build.tcl
+```
+
+---
+
+## Example Output
+
+### Startup output
+
+On power-up the application reads PHY identity and link status over MDIO and prints them over UART:
+
+```
+=== jg_rmii_eth example ===
+DMA ready. Waiting for frames...
+=== LAN8720 PHY ===
+  ID1=0x0007  ID2=0x0007
+  BSR=0x7809  Link=DOWN  AN=pending
+  PSCSR=0x7809
+
+  BSR=0x782D  Link=UP  AN=complete
+  PSCSR=0x782D
+```
+
+The BSR line is reprinted whenever the link status changes. Once the link comes up, frames will start appearing.
+
+### Sending a test frame from the Linux machine
+
+```bash
+sudo python3 -c "from scapy.all import *; \
+  sendp(Ether()/IP(dst='255.255.255.255')/UDP()/\
+b'hello world from jg-rmii-eth Jakobs Lan8720-RMII to AXI-Stream', iface='eth0')"
+```
+
+Expected output on the Zybo UART:
+
+```
+--- Frame 105 bytes  TUSER=0 ---
+ETH  DST=CC:CE:1E:C5:D4:AE  SRC=2C:CF:67:AE:14:08  IPv4
+     SRC=192.168.178.190  DST=255.255.255.255  TTL=64  UDP  SRC_PORT=53  DST_PORT=53
+     Payload 62 bytes:
+68 65 6C 6C 6F 20 77 6F 72 6C 64 20 66 72 6F 6D   hello world from
+20 6A 67 2D 72 6D 69 69 2D 65 74 68 20 4A 61 6B    jg-rmii-eth Jak
+6F 62 73 20 4C 61 6E 38 37 32 30 2D 52 4D 49 49   obs Lan8720-RMII
+20 74 6F 20 41 58 49 2D 53 74 72 65 61 6D          to AXI-Stream
+```
+
+### Background traffic
+
+Once the link is up you will immediately see background traffic from the Linux machine - this is normal. Common frames include:
+
+**DHCP Discover** (Linux machine looking for an IP address):
+```
+--- Frame 329 bytes  TUSER=0 ---
+ETH  DST=FF:FF:FF:FF:FF:FF  SRC=2C:CF:67:AE:14:07  IPv4
+     SRC=0.0.0.0  DST=255.255.255.255  TTL=64  UDP  SRC_PORT=68  DST_PORT=67
+     Payload 286 bytes:
+...
+```
+
+**ICMPv6 Router Solicitation** (IPv6 neighbour discovery):
+```
+--- Frame 63 bytes  TUSER=0 ---
+ETH  DST=33:33:00:00:00:02  SRC=2C:CF:67:AE:14:07  IPv6
+     SRC=FE80:0000:0000:0000:2ECF:67FF:FEAE:1407
+     DST=FF02:0000:0000:0000:0000:0000:0000:0002
+     ICMPv6  type=133  code=0
+```
+
 ---
 
 ## Repository Structure
 
 ```
 jg_rmii_eth/
-├── jg_lan8720_mdio_1.0/          Vivado IP: MDIO controller + LAN8720 bring-up
-│   ├── component.xml
+├── jg_mdio_axi_1.0/              Vivado IP: MDIO AXI controller
+│   ├── hdl/                      jg_mdio_ctrl.vhd, jg_mdio_axi.vhd
+│   ├── bd/
+│   ├── drivers/
 │   ├── xgui/
-│   └── hdl/
+│   └── component.xml
 ├── jg_rmii_axis_decoder_1.0/     Vivado IP: RMII-to-AXI-Stream decoder
-│   ├── component.xml
+│   ├── hdl/                      jg_rmii_to_bytes.vhd, jg_eth_crc.vhd, jg_rmii_axis_decoder.vhd
+│   ├── bd/
 │   ├── xgui/
-│   └── hdl/
-├── sim/                          Testbenches (Vivado / VUnit)
+│   └── component.xml
+├── sim/                          VHDL testbenches for all modules
 ├── formal/                       SymbiYosys proofs and PSL properties
+├── scripts/                      TCL scripts for Vivado and Vitis
 ├── example/
 │   ├── constraints/              XDC pin assignments for Zybo Z7-20
-│   ├── vivado/                   Block design TCL script (project gitignored)
-│   ├── vitis/                    Vitis workspace TCL script (workspace gitignored)
-│   └── sw/
-│       └── src/                  Bare-metal C application sources
+│   ├── vivado/                   Generated Vivado project (gitignored)
+│   ├── vitis/                    Generated Vitis workspace (gitignored)
+│   └── sw/src/                   Bare-metal C application
 ├── Makefile
 ├── LICENSE
 └── README.md
@@ -107,12 +241,12 @@ jg_rmii_eth/
 
 ## Documentation
 
-- [LAN8720A/LAN8720Ai Datasheet](https://ww1.microchip.com/downloads/en/DeviceDoc/en557323.pdf) — Small Footprint RMII 10/100 Ethernet Transceiver with HP Auto-MDIX Support, SMSC
-- [Waveshare LAN8720 ETH Board Schematic](https://www.waveshare.com/w/upload/0/08/LAN8720-ETH-Board-Schematic.pdf) — Board schematic showing RXER/PHYAD0 pull-up to VCC and MODE strap connections
+- [LAN8720A/LAN8720Ai Datasheet](https://ww1.microchip.com/downloads/en/DeviceDoc/en557323.pdf) - Small Footprint RMII 10/100 Ethernet Transceiver with HP Auto-MDIX Support, SMSC
+- [Waveshare LAN8720 ETH Board Schematic](https://www.waveshare.com/w/upload/0/08/LAN8720-ETH-Board-Schematic.pdf) - Board schematic showing RXER/PHYAD0 pull-up to VCC and MODE strap connections
 - Ethernet: Reduced Media Independent Interface (RMII) specification Rev 1.2
 
 ---
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+Apache 2.0 - see [LICENSE](LICENSE).

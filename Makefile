@@ -9,7 +9,7 @@ PROJ_NAME := vivado
 BITSTREAM := $(PROJ_DIR)/$(PROJ_NAME).runs/impl_1/block_design_wrapper.bit
 XSA       := example/sw/top.xsa
 
-.PHONY: all project bitstream xsa vitis vitis_update program sim sim_mdio sim_rmii formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis clean help
+.PHONY: all project bitstream xsa vitis vitis_update sim sim_mdio sim_rmii formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis clean help
 
 all: project bitstream xsa vitis
 
@@ -28,10 +28,6 @@ bitstream:
 xsa:
 	$(VIVADO) -mode batch -source scripts/export_hw.tcl \
 		-tclargs --origin_dir scripts
-
-program:
-	$(VIVADO) -mode batch -source scripts/program.tcl \
-		-tclargs $(BITSTREAM)
 
 vitis:
 	$(XSCT) scripts/vitis_create.tcl
@@ -100,7 +96,6 @@ help:
 	@echo "  xsa              Export hardware description to example/sw/top.xsa"
 	@echo "  vitis            Recreate Vitis workspace from example/vitis_create.tcl"
 	@echo "  vitis_update     Update sources in existing Vitis workspace and rebuild"
-	@echo "  program          Program the board via JTAG (requires bitstream)"
 	@echo "  sim              Run all VUnit simulations"
 	@echo "  sim_mdio         Run VUnit simulation for jg_mdio_axi"
 	@echo "  sim_rmii         Run VUnit simulation for jg_rmii_axis_decoder"
