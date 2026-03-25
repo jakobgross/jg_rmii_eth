@@ -174,7 +174,7 @@ begin
         rd_ready_i, mdio_i, mdc_rise_p, mdc_fall_p)
     begin
         rin        <= r;   -- hold all fields, only overrides below take effect
-        mdio_t     <= '1'; -- default: MAC releases bus
+        mdio_t     <= '0'; -- default: MAC drives bus (IEEE 802.3 idle = driven high)
         mdio_o     <= '1'; -- default: MDIO idles high
         rd_valid_o <= '0';
         ta_err_o   <= '0';

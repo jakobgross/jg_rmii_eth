@@ -12,10 +12,13 @@ example/vitis/
 *.sim/
 *.ip_user_files/
 
-# Vivado build artifacts
+# =============================================================================
+# Vivado log and journal files written to the working directory
+# =============================================================================
 *.jou
 *.log
 *.str
+.Xil
 *edit*.xpr
 *.pb
 *.dcp
@@ -25,7 +28,6 @@ example/vitis/
 *.mcs
 *.prm
 *.rpt
-*.xsa
 vivado_pid*.str
 
 # Vitis workspace (recreated by vitis_create.tcl)

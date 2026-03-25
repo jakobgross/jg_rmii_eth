@@ -14,7 +14,7 @@ foreach {arg val} $argv {
 }
 
 set proj_dir  [file normalize "$origin_dir/../example/vivado"]
-set proj_name "jg_rmii_eth_example"
+set proj_name "vivado"
 set xsa_path  [file normalize "$origin_dir/../example/sw/top.xsa"]
 
 # ---------------------------------------------------------------------------
