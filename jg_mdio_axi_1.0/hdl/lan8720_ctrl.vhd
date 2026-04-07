@@ -392,6 +392,8 @@ begin
 
                 -- Transient error state. Immediately retry from POWER_UP_WAIT.
             when FAULT =>
+                -- Clear Error on transition
+                rin.fault <= '0';
                 rin.timer <= to_unsigned(C_STARTUP_TICKS, C_TIMER_W);
                 goto(POWER_UP_WAIT);
 
