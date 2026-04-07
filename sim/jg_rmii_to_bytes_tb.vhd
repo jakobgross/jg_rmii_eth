@@ -190,9 +190,8 @@ begin
         -----------------------------------------------------------------------
         report ts & "Test 4: partial byte";
         expect(x"AA", '1', '0');
-        -- 2 dibits: "11" then "10" -> sreg = "10" & "11" & (old zeros)
-        -- byte_d = "00" & sreg[7:2] = "00" & "101100"[7:2]... let sim verify
-        expect(x"46", '0', '1');
+        -- 2 dibits: "11" then "10" => valid bits 3:0 = 1011, upper bits zero
+        expect(x"0B", '0', '1');
 
         send_preamble_sfd;
         send_byte(x"AA");
@@ -321,8 +320,8 @@ begin
 
             assert byte_o = exp.data
             report ts & "byte mismatch at index " & integer'image(exp_rd_ptr - 1)
-                & ": got 0x" & integer'image(to_integer(unsigned(byte_o)))
-                & " expected 0x" & integer'image(to_integer(unsigned(exp.data)))
+                & ": got 0x" & to_hstring(byte_o)
+                & " expected 0x" & to_hstring(exp.data)
                 severity FAILURE;
 
             assert sof_o = exp.sof
