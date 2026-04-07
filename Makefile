@@ -1,15 +1,24 @@
 VIVADO    := vivado
 XSCT      := xsct
 PYTHON    := python3
+GHDL      := ghdl
 
 # Example project paths
 PROJ_DIR  := example/vivado
 PROJ_NAME := vivado
 
+# HDL source directories
+MDIO_HDL  := jg_mdio_axi_1.0/hdl
+RMII_HDL  := jg_rmii_axis_decoder_1.0/hdl
+SIM_WORK  := sim/work
+
+# GHDL common flags
+GHDL_FLAGS := --std=08 -frelaxed --warn-no-shared
+
 BITSTREAM := $(PROJ_DIR)/$(PROJ_NAME).runs/impl_1/block_design_wrapper.bit
 XSA       := example/sw/top.xsa
 
-.PHONY: all project bitstream xsa vitis vitis_update sim sim_mdio sim_rmii formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis clean help
+.PHONY: all project bitstream xsa vitis vitis_update sim sim_mdio sim_rmii sim_mdio_ctrl sim_lan8720_ctrl sim_rmii_to_bytes sim_rmii_axis_decoder formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis clean help
 
 all: project bitstream xsa vitis
 
@@ -36,18 +45,49 @@ vitis_update:
 	$(XSCT) scripts/vitis_update.tcl
 
 # ==============================================================================
-# Simulation (VUnit)
+# Simulation (GHDL)
 # ==============================================================================
 
 sim: sim_mdio sim_rmii
 
-sim_mdio:
-	@echo "[TODO] VUnit simulation for jg_mdio_axi not yet implemented"
-	@echo "       Add run.py in sim/ and invoke: $(PYTHON) sim/run.py"
+sim_mdio: sim_mdio_ctrl sim_lan8720_ctrl
 
-sim_rmii:
-	@echo "[TODO] VUnit simulation for jg_rmii_axis_decoder not yet implemented"
-	@echo "       Add run.py in sim/ and invoke: $(PYTHON) sim/run.py"
+sim_rmii: sim_rmii_to_bytes sim_rmii_axis_decoder
+
+sim_mdio_ctrl:
+	mkdir -p $(SIM_WORK)/mdio_ctrl
+	$(GHDL) -a $(GHDL_FLAGS) --workdir=$(SIM_WORK)/mdio_ctrl \
+		$(MDIO_HDL)/jg_mdio_ctrl.vhd \
+		sim/jg_mdio_ctrl_tb.vhd
+	$(GHDL) -e $(GHDL_FLAGS) --workdir=$(SIM_WORK)/mdio_ctrl jg_mdio_ctrl_tb
+	$(GHDL) -r $(GHDL_FLAGS) --workdir=$(SIM_WORK)/mdio_ctrl jg_mdio_ctrl_tb
+
+sim_lan8720_ctrl:
+	mkdir -p $(SIM_WORK)/lan8720_ctrl
+	$(GHDL) -a $(GHDL_FLAGS) --workdir=$(SIM_WORK)/lan8720_ctrl \
+		$(MDIO_HDL)/jg_mdio_ctrl.vhd \
+		$(MDIO_HDL)/lan8720_ctrl.vhd \
+		sim/lan8720_ctrl_tb.vhd
+	$(GHDL) -e $(GHDL_FLAGS) --workdir=$(SIM_WORK)/lan8720_ctrl lan8720_ctrl_tb
+	$(GHDL) -r $(GHDL_FLAGS) --workdir=$(SIM_WORK)/lan8720_ctrl lan8720_ctrl_tb
+
+sim_rmii_to_bytes:
+	mkdir -p $(SIM_WORK)/rmii_to_bytes
+	$(GHDL) -a $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_to_bytes \
+		$(RMII_HDL)/jg_rmii_to_bytes.vhd \
+		sim/jg_rmii_to_bytes_tb.vhd
+	$(GHDL) -e $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_to_bytes jg_rmii_to_bytes_tb
+	$(GHDL) -r $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_to_bytes jg_rmii_to_bytes_tb
+
+sim_rmii_axis_decoder:
+	mkdir -p $(SIM_WORK)/rmii_axis_decoder
+	$(GHDL) -a $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_axis_decoder \
+		$(RMII_HDL)/jg_eth_crc.vhd \
+		$(RMII_HDL)/jg_rmii_to_bytes.vhd \
+		$(RMII_HDL)/jg_rmii_axis_decoder.vhd \
+		sim/jg_rmii_axis_decoder_tb.vhd
+	$(GHDL) -e $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_axis_decoder jg_rmii_axis_decoder_tb
+	$(GHDL) -r $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_axis_decoder jg_rmii_axis_decoder_tb
 
 # ==============================================================================
 # Formal verification (SymbiYosys)
@@ -77,6 +117,7 @@ formal_rmii_axis:
 
 clean:
 	rm -rf example/vivado/ example/vitis/
+	rm -rf $(SIM_WORK)
 	rm -f vivado.jou vivado.log
 	find . -name "*.log" -delete
 	find . -name "*.jou" -delete
@@ -96,9 +137,13 @@ help:
 	@echo "  xsa              Export hardware description to example/sw/top.xsa"
 	@echo "  vitis            Recreate Vitis workspace from example/vitis_create.tcl"
 	@echo "  vitis_update     Update sources in existing Vitis workspace and rebuild"
-	@echo "  sim              Run all VUnit simulations"
-	@echo "  sim_mdio         Run VUnit simulation for jg_mdio_axi"
-	@echo "  sim_rmii         Run VUnit simulation for jg_rmii_axis_decoder"
+	@echo "  sim                    Run all GHDL simulations"
+	@echo "  sim_mdio               Run all MDIO simulations"
+	@echo "  sim_rmii               Run all RMII simulations"
+	@echo "  sim_mdio_ctrl          Run GHDL simulation for jg_mdio_ctrl"
+	@echo "  sim_lan8720_ctrl       Run GHDL simulation for lan8720_ctrl"
+	@echo "  sim_rmii_to_bytes      Run GHDL simulation for jg_rmii_to_bytes"
+	@echo "  sim_rmii_axis_decoder  Run GHDL simulation for jg_rmii_axis_decoder"
 	@echo "  formal           Run all SymbiYosys proofs"
 	@echo "  formal_mdio      Run SymbiYosys proof for jg_mdio_axi"
 	@echo "  formal_rmii_to_bytes  Run SymbiYosys proof for jg_rmii_to_bytes"
@@ -120,4 +165,5 @@ help:
 	@echo "  VIVADO           Path to Vivado executable (default: vivado)"
 	@echo "  XSCT             Path to XSCT executable (default: xsct)"
 	@echo "  PYTHON           Python interpreter (default: python3)"
+	@echo "  GHDL             Path to GHDL executable (default: ghdl)"
 	@echo ""

@@ -28,7 +28,7 @@ architecture sim of jg_rmii_axis_decoder_tb is
     constant C_CLK_PERIOD : time := 20 ns;
 
     signal clk           : std_logic                    := '0';
-    signal rst_n         : std_logic                    := '0';
+    signal resetn        : std_logic                    := '0';
     signal rmii_crs_dv   : std_logic                    := '0';
     signal rmii_rxd      : std_logic_vector(1 downto 0) := "00";
     signal m_axis_tdata  : std_logic_vector(31 downto 0);
@@ -86,7 +86,7 @@ begin
     i_dut : entity work.jg_rmii_axis_decoder
         port map(
             clk             => clk,
-            rst_n           => rst_n,
+            resetn          => resetn,
             rmii_crs_dv     => rmii_crs_dv,
             rmii_rxd        => rmii_rxd,
             m_axis_tdata    => m_axis_tdata,
@@ -181,7 +181,7 @@ begin
 
 begin
     wait for C_CLK_PERIOD * 5;
-    rst_n <= '1';
+    resetn <= '1';
     wait for C_CLK_PERIOD * 5;
 
     -----------------------------------------------------------------------
@@ -236,7 +236,7 @@ begin
     wait for C_CLK_PERIOD * 500;
     assert unsigned(words_dropped) > 0
     report "[@" & time'image(now) & "] Test 3: expected words_dropped > 0"
-        severity ERROR;
+        severity FAILURE;
 
     -- Release tready, flush remaining words silently with a generous wait
     flush_mode := true;
@@ -268,7 +268,7 @@ begin
     report "[@" & time'image(now) & "] Test 4: PASS";
 
     report "[@" & time'image(now) & "] All tests passed";
-    wait;
+    std.env.finish;
 end process p_send;
 
 ---------------------------------------------------------------------------
@@ -277,7 +277,7 @@ end process p_send;
 p_recv : process
     variable exp : t_expected;
 begin
-    wait until rst_n = '1';
+    wait until resetn = '1';
 
     loop
         wait until rising_edge(clk) and m_axis_tvalid = '1' and m_axis_tready = '1';
@@ -288,7 +288,7 @@ begin
                 & integer'image(to_integer(unsigned(m_axis_tdata)))
                 & " tlast=" & std_logic'image(m_axis_tlast)
                 & " tuser=" & std_logic'image(m_axis_tuser)
-                severity ERROR;
+                severity FAILURE;
 
             exp        := exp_queue(exp_rd_ptr);
             exp_rd_ptr := exp_rd_ptr + 1;
@@ -298,25 +298,25 @@ begin
             report "[@" & time'image(now) & "] tdata mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got 0x" & integer'image(to_integer(unsigned(m_axis_tdata)))
                 & " expected 0x" & integer'image(to_integer(unsigned(exp.tdata)))
-                severity ERROR;
+                severity FAILURE;
 
             assert m_axis_tkeep = exp.tkeep
             report "[@" & time'image(now) & "] tkeep mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got " & integer'image(to_integer(unsigned(m_axis_tkeep)))
                 & " expected " & integer'image(to_integer(unsigned(exp.tkeep)))
-                severity ERROR;
+                severity FAILURE;
 
             assert m_axis_tlast = exp.tlast
             report "[@" & time'image(now) & "] tlast mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got " & std_logic'image(m_axis_tlast)
                 & " expected " & std_logic'image(exp.tlast)
-                severity ERROR;
+                severity FAILURE;
 
             assert m_axis_tuser = exp.tuser
             report "[@" & time'image(now) & "] tuser mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got " & std_logic'image(m_axis_tuser)
                 & " expected " & std_logic'image(exp.tuser)
-                severity ERROR;
+                severity FAILURE;
         end if;
     end loop;
 end process p_recv;

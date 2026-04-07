@@ -140,7 +140,7 @@ begin
 
         loop
             -- Wait for start of transaction
-            wait until mdio_t = '0';
+            wait until falling_edge(ready_o);
 
             -- Align to the DUT's cycle boundary.
             -- The first falling edge here is when the DUT completes preamble
@@ -153,16 +153,16 @@ begin
                 wait until rising_edge(mdc);
                 assert mdio_o = '1'
                 report "Preamble bit " & integer'image(i) & " not '1'"
-                    severity ERROR;
+                    severity FAILURE;
                 wait until falling_edge(mdc);
             end loop;
 
             -- Start of frame: bit 0 = '0', bit 1 = '1'
             wait until rising_edge(mdc);
-            assert mdio_o = '0' report "START[0]: expected '0'" severity ERROR;
+            assert mdio_o = '0' report "START[0]: expected '0'" severity FAILURE;
             wait until falling_edge(mdc);
             wait until rising_edge(mdc);
-            assert mdio_o = '1' report "START[1]: expected '1'" severity ERROR;
+            assert mdio_o = '1' report "START[1]: expected '1'" severity FAILURE;
             wait until falling_edge(mdc);
 
             -- Opcode: 2 bits MSB first
@@ -180,7 +180,7 @@ begin
                 wait until falling_edge(mdc);
             end loop;
             assert captured_phy_addr = C_PHY_ADDR
-            report "PHY_ADDR mismatch" severity ERROR;
+            report "PHY_ADDR mismatch" severity FAILURE;
 
             -- Register address: 5 bits MSB first
             for i in 4 downto 0 loop
@@ -189,21 +189,21 @@ begin
                 wait until falling_edge(mdc);
             end loop;
             assert captured_reg_addr = C_REG_ADDR
-            report "REG_ADDR mismatch" severity ERROR;
+            report "REG_ADDR mismatch" severity FAILURE;
 
             if opcode = "01" then
                 -----------------------------------------------------------
                 -- Write transaction
                 -----------------------------------------------------------
                 assert phy_mode = 1
-                report "Unexpected write transaction" severity ERROR;
+                report "Unexpected write transaction" severity FAILURE;
 
                 -- Turnaround: MAC drives "10"
                 wait until rising_edge(mdc);
-                assert mdio_o = '1' report "Write TA[0]: expected '1'" severity ERROR;
+                assert mdio_o = '1' report "Write TA[0]: expected '1'" severity FAILURE;
                 wait until falling_edge(mdc);
                 wait until rising_edge(mdc);
-                assert mdio_o = '0' report "Write TA[1]: expected '0'" severity ERROR;
+                assert mdio_o = '0' report "Write TA[1]: expected '0'" severity FAILURE;
                 wait until falling_edge(mdc);
 
                 -- Capture 16 data bits MSB first
@@ -213,7 +213,7 @@ begin
                     wait until falling_edge(mdc);
                 end loop;
                 assert captured_wr_data = C_WR_DATA
-                report "Write data mismatch" severity ERROR;
+                report "Write data mismatch" severity FAILURE;
 
             elsif opcode = "10" then
                 -----------------------------------------------------------
@@ -254,7 +254,7 @@ begin
                 end if;
 
             else
-                report "PHY model: unknown opcode" severity ERROR;
+                report "PHY model: unknown opcode" severity FAILURE;
             end if;
 
         end loop;
@@ -307,7 +307,7 @@ begin
         assert rd_data_o = C_RD_DATA
         report "Test 2: rd_data_o mismatch, got 0x" &
             integer'image(to_integer(unsigned(rd_data_o)))
-            severity ERROR;
+            severity FAILURE;
         rd_ready_i <= '1';
         wait until rising_edge(clk);
         rd_ready_i <= '0';
@@ -330,7 +330,7 @@ begin
         report "Test 3: PASS";
 
         report "All tests passed";
-        wait;
+        std.env.finish;
     end process;
 
 end architecture sim;

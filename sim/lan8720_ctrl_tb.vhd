@@ -181,11 +181,11 @@ begin
         report "Test 1: Full startup sequence";
 
         wait_state(x"6");  -- LINK_UP
-        assert link_up_o = '1'  report "T1: link_up not set"  severity ERROR;
-        assert fault_o   = '0'  report "T1: unexpected fault" severity ERROR;
-        assert speed_o   = "110" report "T1: speed wrong"     severity ERROR;
-        assert phy_id1_o = x"0007" report "T1: phy_id1 wrong" severity ERROR;
-        assert phy_id2_o = x"C0F0" report "T1: phy_id2 wrong" severity ERROR;
+        assert link_up_o = '1'  report "T1: link_up not set"  severity FAILURE;
+        assert fault_o   = '0'  report "T1: unexpected fault" severity FAILURE;
+        assert speed_o   = "110" report "T1: speed wrong"     severity FAILURE;
+        assert phy_id1_o = x"0007" report "T1: phy_id1 wrong" severity FAILURE;
+        assert phy_id2_o = x"C0F0" report "T1: phy_id2 wrong" severity FAILURE;
         report "Test 1: PASS";
 
         wait_cycles(20);
@@ -198,13 +198,13 @@ begin
         -- BSR now reports link down
         mock_bsr_val <= x"0008";  -- bit 2 clear = link down, bit 3 set = AN capable
         wait_state(x"3");  -- WAIT_LINK (link lost, re-negotiating)
-        assert link_up_o = '0' report "T2: link_up should be clear" severity ERROR;
+        assert link_up_o = '0' report "T2: link_up should be clear" severity FAILURE;
 
         -- Restore BSR to link up
         mock_bsr_val <= x"002C";
         wait_state(x"6");  -- back to LINK_UP
-        assert link_up_o = '1' report "T2: link_up not restored" severity ERROR;
-        assert fault_o   = '0' report "T2: unexpected fault"     severity ERROR;
+        assert link_up_o = '1' report "T2: link_up not restored" severity FAILURE;
+        assert fault_o   = '0' report "T2: unexpected fault"     severity FAILURE;
         report "Test 2: PASS";
 
         wait_cycles(20);
@@ -221,21 +221,21 @@ begin
         rst_n <= '1';
 
         wait_state(x"7");  -- FAULT
-        assert fault_o   = '1' report "T3: fault not set"           severity ERROR;
-        assert link_up_o = '0' report "T3: link_up should be clear" severity ERROR;
+        assert fault_o   = '1' report "T3: fault not set"           severity FAILURE;
+        assert link_up_o = '0' report "T3: link_up should be clear" severity FAILURE;
 
         -- FAULT transitions immediately to POWER_UP_WAIT for retry
         wait_state(x"0");  -- POWER_UP_WAIT
-        assert fault_o = '0' report "T3: fault should clear on retry" severity ERROR;
+        assert fault_o = '0' report "T3: fault should clear on retry" severity FAILURE;
 
         -- Allow it to complete the retry with no more TA errors
         mock_ta_err <= '0';
         wait_state(x"6");  -- LINK_UP on retry
-        assert link_up_o = '1' report "T3: link_up not set after retry" severity ERROR;
+        assert link_up_o = '1' report "T3: link_up not set after retry" severity FAILURE;
         report "Test 3: PASS";
 
         report "All tests passed";
-        wait;
+        std.env.finish;
     end process;
 
 end architecture sim;

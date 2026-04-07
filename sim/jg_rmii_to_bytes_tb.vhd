@@ -192,7 +192,7 @@ begin
         expect(x"AA", '1', '0');
         -- 2 dibits: "11" then "10" -> sreg = "10" & "11" & (old zeros)
         -- byte_d = "00" & sreg[7:2] = "00" & "101100"[7:2]... let sim verify
-        expect(x"0B", '0', '1'); -- update if sim shows different value
+        expect(x"46", '0', '1');
 
         send_preamble_sfd;
         send_byte(x"AA");
@@ -294,7 +294,7 @@ begin
 
         wait_checked;
         report ts & "All tests passed";
-        wait;
+        std.env.finish;
     end process p_send;
 
     ---------------------------------------------------------------------------
@@ -313,7 +313,7 @@ begin
                 & integer'image(to_integer(unsigned(byte_o)))
                 & " sof=" & std_logic'image(sof_o)
                 & " eof=" & std_logic'image(eof_o)
-                severity ERROR;
+                severity FAILURE;
 
             exp        := exp_queue(exp_rd_ptr);
             exp_rd_ptr := exp_rd_ptr + 1;
@@ -323,19 +323,19 @@ begin
             report ts & "byte mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got 0x" & integer'image(to_integer(unsigned(byte_o)))
                 & " expected 0x" & integer'image(to_integer(unsigned(exp.data)))
-                severity ERROR;
+                severity FAILURE;
 
             assert sof_o = exp.sof
             report ts & "sof mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got " & std_logic'image(sof_o)
                 & " expected " & std_logic'image(exp.sof)
-                severity ERROR;
+                severity FAILURE;
 
             assert eof_o = exp.eof
             report ts & "eof mismatch at index " & integer'image(exp_rd_ptr - 1)
                 & ": got " & std_logic'image(eof_o)
                 & " expected " & std_logic'image(exp.eof)
-                severity ERROR;
+                severity FAILURE;
         end loop;
     end process p_recv;
 

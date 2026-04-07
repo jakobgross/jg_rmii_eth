@@ -1,0 +1,43 @@
+name: GHDL Simulation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ghdl_sim:
+    runs-on: ubuntu-latest
+    container:
+      image: python:bookworm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure Git safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Download OSS-CAD Suite
+        run: |
+          wget https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-01-14/oss-cad-suite-linux-x64-20260114.tgz -O oss-cad-suite.tgz
+          mkdir -p oss-cad-suite
+          tar -xzf oss-cad-suite.tgz -C oss-cad-suite --strip-components=1
+          echo "$(pwd)/oss-cad-suite/bin" >> $GITHUB_PATH
+
+      - name: Verify GHDL
+        run: ghdl --version
+
+      - name: Simulate jg_mdio_ctrl
+        run: make sim_mdio_ctrl
+
+      - name: Simulate lan8720_ctrl
+        run: make sim_lan8720_ctrl
+
+      - name: Simulate jg_rmii_to_bytes
+        run: make sim_rmii_to_bytes
+
+      - name: Simulate jg_rmii_axis_decoder
+        run: make sim_rmii_axis_decoder
