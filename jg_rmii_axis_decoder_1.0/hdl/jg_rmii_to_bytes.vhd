@@ -26,8 +26,8 @@
 ----------------------------------------------------------------------------------
 
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.NUMERIC_STD.all;
 
 entity jg_rmii_to_bytes is
     port (
@@ -39,8 +39,8 @@ entity jg_rmii_to_bytes is
 
         byte_o       : out std_logic_vector(7 downto 0);
         byte_valid_o : out std_logic;
-        sof_o        : out std_logic; 
-        eof_o        : out std_logic  
+        sof_o        : out std_logic;
+        eof_o        : out std_logic
     );
 end entity jg_rmii_to_bytes;
 
@@ -62,10 +62,10 @@ architecture rtl of jg_rmii_to_bytes is
     constant C_REG_RESET : t_reg := (
         state        => IDLE,
         crs_dv_prev  => '0',
-        sreg         => (others => '0'),
-        dcnt         => (others => '0'),
+        sreg => (others => '0'),
+        dcnt => (others => '0'),
         first_byte   => '0',
-        byte_d       => (others => '0'),
+        byte_d => (others => '0'),
         byte_valid_d => '0',
         sof_d        => '0'
     );
@@ -80,7 +80,7 @@ begin
     sof_o        <= r.sof_d;
     eof_o        <= r.byte_valid_d and not (rmii_crs_dv or r.crs_dv_prev);
 
-    comb : process(r, rmii_crs_dv, rmii_rxd)
+    comb : process (r, rmii_crs_dv, rmii_rxd)
     begin
         rin <= r;
 
@@ -90,7 +90,7 @@ begin
 
         case r.state is
 
-            when IDLE =>
+            when IDLE           =>
                 rin.dcnt <= (others => '0');
 
                 if rmii_crs_dv = '0' then
@@ -112,7 +112,15 @@ begin
                     -- mid-byte (dcnt > 0). On a byte boundary dcnt=0 means
                     -- no dibits have been shifted in yet so nothing to emit.
                     if r.dcnt /= "00" then
-                        rin.byte_d       <= "00" & r.sreg(7 downto 2);
+                        -- sreg keeps the received dibits left-aligned.
+                        -- Re-pack the valid dibits into the low bits and
+                        -- leave the missing MSBs zero-padded.
+                        case r.dcnt is
+                            when "01"   => rin.byte_d <= "000000" & r.sreg(7 downto 6);
+                            when "10"   => rin.byte_d <= "0000" & r.sreg(7 downto 4);
+                            when "11"   => rin.byte_d <= "00" & r.sreg(7 downto 2);
+                            when others => null;
+                        end case;
                         rin.byte_valid_d <= '1';
                     end if;
                     rin.state      <= IDLE;
@@ -134,7 +142,7 @@ begin
         end case;
     end process comb;
 
-    seq : process(clk)
+    seq : process (clk)
     begin
         if rising_edge(clk) then
             if rst_n = '0' then
