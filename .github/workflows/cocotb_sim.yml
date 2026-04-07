@@ -1,0 +1,49 @@
+name: CocoTB Simulation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cocotb_sim:
+    runs-on: ubuntu-latest
+    container:
+      image: python:bookworm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure Git safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Download OSS-CAD Suite
+        run: |
+          wget https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-01-14/oss-cad-suite-linux-x64-20260114.tgz -O oss-cad-suite.tgz
+          mkdir -p oss-cad-suite
+          tar -xzf oss-cad-suite.tgz -C oss-cad-suite --strip-components=1
+          echo "$(pwd)/oss-cad-suite/bin" >> $GITHUB_PATH
+
+      - name: Install Python packages
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install cocotb cocotbext-axi scapy
+
+      - name: Verify toolchain
+        run: |
+          ghdl --version
+          python3 -c "import cocotb, cocotbext.axi, scapy; print('Python packages OK')"
+
+      - name: Run CocoTB simulation
+        run: make sim_rmii_axis_decoder_cocotb
+
+      - name: Publish CocoTB Test Report
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: RMII AXIS Decoder CocoTB Results
+          path: results.xml
+          reporter: java-junit

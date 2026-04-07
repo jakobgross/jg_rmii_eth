@@ -19,6 +19,7 @@ BITSTREAM := $(PROJ_DIR)/$(PROJ_NAME).runs/impl_1/block_design_wrapper.bit
 XSA       := example/sw/top.xsa
 
 .PHONY: all project bitstream xsa vitis vitis_update sim sim_mdio sim_rmii sim_mdio_ctrl sim_lan8720_ctrl sim_rmii_to_bytes sim_rmii_axis_decoder formal formal_mdio formal_rmii_to_bytes formal_eth_crc formal_rmii_axis clean help
+.PHONY: sim_rmii_axis_decoder_cocotb
 
 all: project bitstream xsa vitis
 
@@ -90,6 +91,21 @@ sim_rmii_axis_decoder:
 	$(GHDL) -r $(GHDL_FLAGS) --workdir=$(SIM_WORK)/rmii_axis_decoder jg_rmii_axis_decoder_tb
 
 # ==============================================================================
+# Simulation (cocotb & GHDL)
+# ==============================================================================
+
+sim_cocotb: sim_rmii_axis_decoder_cocotb
+
+sim_rmii_axis_decoder_cocotb:
+	$(MAKE) -f "$$(cocotb-config --makefiles)/Makefile.sim" \
+		SIM=ghdl \
+		TOPLEVEL_LANG=vhdl \
+		TOPLEVEL=jg_rmii_axis_decoder \
+		COCOTB_TEST_MODULES=jg_rmii_axis_decoder_coco \
+		PYTHONPATH="$(CURDIR)/sim" \
+		VHDL_SOURCES="$(RMII_HDL)/jg_eth_crc.vhd $(RMII_HDL)/jg_rmii_to_bytes.vhd $(RMII_HDL)/jg_rmii_axis_decoder.vhd"
+
+# ==============================================================================
 # Formal verification (SymbiYosys)
 # ==============================================================================
 
@@ -144,6 +160,8 @@ help:
 	@echo "  sim_lan8720_ctrl       Run GHDL simulation for lan8720_ctrl"
 	@echo "  sim_rmii_to_bytes      Run GHDL simulation for jg_rmii_to_bytes"
 	@echo "  sim_rmii_axis_decoder  Run GHDL simulation for jg_rmii_axis_decoder"
+	@echo "  sim_cocotb  				   Run all cocotb/GHDL simulation"
+	@echo "  sim_rmii_axis_decoder_cocotb  Run cocotb/GHDL simulation for jg_rmii_axis_decoder"
 	@echo "  formal           Run all SymbiYosys proofs"
 	@echo "  formal_mdio      Run SymbiYosys proof for jg_mdio_axi"
 	@echo "  formal_rmii_to_bytes  Run SymbiYosys proof for jg_rmii_to_bytes"

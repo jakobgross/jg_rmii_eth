@@ -24,7 +24,7 @@ Developed and tested with Vivado 2021.2 and Vitis 2021.2.
 - [x] CRC-32 engine and FCS stripper (`jg_eth_crc`)
 - [x] 32-bit AXI-Stream word builder (`jg_rmii_axis_decoder`)
 - [x] `jg_rmii_axis_decoder` testbench (good frame, bad CRC, back-pressure, stress)
-- [ ] VUnit or CocoTB simulation flow
+- [x] CocoTB simulation flow
 - [ ] Formal verification - `jg_rmii_to_bytes`
 - [ ] Formal verification - `jg_eth_crc`
 - [ ] Formal verification - `jg_rmii_axis_decoder` (AXI-Stream PSL properties)
@@ -124,12 +124,52 @@ make bitstream        Run synthesis, implementation and generate bitstream
 make xsa              Export hardware description to example/sw/top.xsa
 make vitis            Recreate Vitis workspace from scripts/vitis_create.tcl
 make vitis_update     Update sources in existing Vitis workspace and rebuild
-make sim              Run all simulations
+make sim              Run all GHDL simulations
+make sim_cocotb       Run cocotb/GHDL simulations 
 make formal           Run all SymbiYosys proofs
 make clean            Remove all generated build artifacts
 ```
 
 Run `make help` for the full target list and variable overrides.
+
+### CocoTB
+
+The RMII AXIS decoder now also has a cocotb testbench driven through GHDL:
+
+```bash
+make sim_rmii_axis_decoder_cocotb
+```
+
+Requirements:
+
+```bash
+ghdl --version
+python3 -m pip install cocotb cocotbext-axi scapy
+```
+
+The cocotb testbench is implemented in `sim/jg_rmii_axis_decoder_coco.py` and uses:
+
+- `cocotb` for the Python testbench runtime
+- `cocotbext-axi` for the AXI-Stream sink
+- `scapy` to build Ethernet frame bytes
+- `ghdl` as the simulator backend
+
+Scapy is used in an offline packet-construction mode inside the testbench, so no physical network interface is required for local runs or CI.
+
+Example passing output:
+
+```text
+******************************************************************************************************************************
+** TEST                                                                  STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+******************************************************************************************************************************
+** jg_rmii_axis_decoder_coco.test_good_header_only_frame                  PASS        2430.00           0.01     163955.97  **
+** jg_rmii_axis_decoder_coco.test_bad_crc_sets_tuser                      PASS        5870.00           0.02     348392.71  **
+** jg_rmii_axis_decoder_coco.test_bad_sfd_produces_no_axis_frame          PASS        7990.00           0.01     745185.65  **
+** jg_rmii_axis_decoder_coco.test_backpressure_increments_words_dropped   PASS       15750.00           0.03     494355.93  **
+******************************************************************************************************************************
+** TESTS=4 PASS=4 FAIL=0 SKIP=0                                                      32040.00           0.09     353075.59  **
+******************************************************************************************************************************
+```
 
 ### Saving changes back to the repository
 
