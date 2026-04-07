@@ -102,7 +102,7 @@ sim_rmii_axis_decoder_cocotb:
 		TOPLEVEL_LANG=vhdl \
 		TOPLEVEL=jg_rmii_axis_decoder \
 		COCOTB_TEST_MODULES=jg_rmii_axis_decoder_coco \
-		PYTHONPATH="$(CURDIR)/sim" \
+		PYTHONPATH="$(CURDIR)/sim:$(PYTHONPATH)" \
 		VHDL_SOURCES="$(RMII_HDL)/jg_eth_crc.vhd $(RMII_HDL)/jg_rmii_to_bytes.vhd $(RMII_HDL)/jg_rmii_axis_decoder.vhd"
 
 # ==============================================================================

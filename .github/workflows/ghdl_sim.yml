@@ -12,7 +12,7 @@ jobs:
   ghdl_sim:
     runs-on: ubuntu-latest
     container:
-      image: python:bookworm
+      image: python:3.13-bookworm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,12 +20,11 @@ jobs:
       - name: Configure Git safe directory
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
-      - name: Download OSS-CAD Suite
+      - name: Install GHDL
         run: |
-          wget https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-01-14/oss-cad-suite-linux-x64-20260114.tgz -O oss-cad-suite.tgz
-          mkdir -p oss-cad-suite
-          tar -xzf oss-cad-suite.tgz -C oss-cad-suite --strip-components=1
-          echo "$(pwd)/oss-cad-suite/bin" >> $GITHUB_PATH
+          apt-get update
+          apt-get install -y --no-install-recommends ghdl make
+          rm -rf /var/lib/apt/lists/*
 
       - name: Verify GHDL
         run: ghdl --version
