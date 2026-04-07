@@ -12,7 +12,7 @@ jobs:
   cocotb_sim:
     runs-on: ubuntu-latest
     container:
-      image: python:bookworm
+      image: python:3.13-bookworm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
