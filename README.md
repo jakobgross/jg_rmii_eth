@@ -2,6 +2,7 @@
 
 [![CocoTB Simulation](https://github.com/jakobgross/jg_rmii_eth/actions/workflows/cocotb_sim.yml/badge.svg)](https://github.com/jakobgross/jg_rmii_eth/actions/workflows/cocotb_sim.yml)
 [![GHDL Simulation](https://github.com/jakobgross/jg_rmii_eth/actions/workflows/ghdl_sim.yml/badge.svg)](https://github.com/jakobgross/jg_rmii_eth/actions/workflows/ghdl_sim.yml)
+[![SymbiYosys Formal](https://github.com/jakobgross/jg_rmii_eth/actions/workflows/sby.yml/badge.svg)](https://github.com/jakobgross/jg_rmii_eth/actions/workflows/sby.yml)
 
 MDIO AXI controller and RMII-to-AXI-Stream decoder for Xilinx Zynq-7000, packaged as Vivado IPs. Includes frame detection and CRC-32 checking. Receive only. Example project targets the Digilent Zybo Z7-20.
 

@@ -116,8 +116,7 @@ formal_mdio:
 	@echo "       Add formal/jg_mdio_axi.sby and invoke: sby -f formal/jg_mdio_axi.sby"
 
 formal_rmii_to_bytes:
-	@echo "[TODO] SymbiYosys proof for jg_rmii_to_bytes not yet implemented"
-	@echo "       Add formal/jg_rmii_to_bytes.sby and invoke: sby -f formal/jg_rmii_to_bytes.sby"
+	sby -f -d formal/.sby/jg_rmii_to_bytes formal/jg_rmii_to_bytes.sby
 
 formal_eth_crc:
 	@echo "[TODO] SymbiYosys proof for jg_eth_crc not yet implemented"

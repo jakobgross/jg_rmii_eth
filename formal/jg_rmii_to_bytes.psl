@@ -1,0 +1,31 @@
+vunit jg_rmii_to_bytes_vu (jg_rmii_to_bytes(rtl)) {
+  default clock is rising_edge(clk);
+
+  reset_once_then_run:
+    assume {not rst_n; rst_n[*]};
+
+  visible_sfd_then_first_byte_sets_sof:
+    assert always (
+      {
+        {(rmii_crs_dv = '1') and (rmii_rxd = "01")}[*3 to inf];
+        {(rmii_crs_dv = '1') and (rmii_rxd = "11")};
+        {rmii_crs_dv = '1'}[*4]
+      } |=> eventually! (sof_o and byte_valid_o)
+    );
+
+  every_sof_eventually_reaches_eof:
+    assert always (
+      sof_o -> eventually! eof_o
+    );
+
+  sof_is_single_cycle_pulse:
+    assert never {sof_o; sof_o};
+
+  eof_is_single_cycle_pulse:
+    assert never {eof_o; eof_o};
+
+  no_second_sof_before_eof:
+    assert always (
+      (rst_n and prev(rst_n) and sof_o and not eof_o) |=> ((not sof_o) until eof_o)
+    );
+}

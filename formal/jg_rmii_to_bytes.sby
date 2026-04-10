@@ -1,0 +1,15 @@
+[options]
+mode prove
+depth 20
+
+[engines]
+smtbmc yices
+
+[script]
+plugin -i ghdl
+ghdl --std=08 -fpsl jg_rmii_to_bytes.vhd jg_rmii_to_bytes.psl -e jg_rmii_to_bytes
+prep -top jg_rmii_to_bytes
+
+[files]
+jg_rmii_axis_decoder_1.0/hdl/jg_rmii_to_bytes.vhd
+formal/jg_rmii_to_bytes.psl

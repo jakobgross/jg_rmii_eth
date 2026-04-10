@@ -1,0 +1,59 @@
+name: SymbiYosys Formal
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sby_test:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.13-bookworm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure Git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install workflow dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends wget ca-certificates make
+          rm -rf /var/lib/apt/lists/*
+
+      - name: Download OSS-CAD Suite
+        run: |
+          wget https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-01-14/oss-cad-suite-linux-x64-20260114.tgz -O oss-cad-suite.tgz
+          mkdir -p oss-cad-suite
+          tar -xzf oss-cad-suite.tgz -C oss-cad-suite --strip-components=1
+          echo "$(pwd)/oss-cad-suite/bin" >> "$GITHUB_PATH"
+
+      - name: Verify OSS-CAD Suite
+        run: |
+          yosys -V
+          sby --version
+          ghdl --version
+
+      - name: Run SymbiYosys proof
+        run: make formal_rmii_to_bytes
+
+      - name: Publish SymbiYosys Test Report
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: RMII To Bytes SymbiYosys Results
+          path: formal/.sby/jg_rmii_to_bytes/jg_rmii_to_bytes.xml
+          reporter: java-junit
+
+      - name: Upload SBY artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jg_rmii_to_bytes-sby
+          path: formal/.sby/jg_rmii_to_bytes
+          if-no-files-found: ignore
