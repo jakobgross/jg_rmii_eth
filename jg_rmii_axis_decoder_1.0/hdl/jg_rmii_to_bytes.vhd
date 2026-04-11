@@ -12,8 +12,8 @@
 -- End of frame (LAN8720A section 3.4.1.1):
 --   CRS_DV may toggle at end of frame rather than simply going low. The OR
 --   of two consecutive CRS_DV samples is used as rx_dv to handle this.
---   eof_o is combinatorial: byte_valid_d AND NOT rx_dv. It goes high on the
---   same cycle the last byte is presented without an additional register.
+--   A completed byte is held for one extra cycle so eof_o can be aligned with
+--   that byte once the two-sample rx_dv rule has resolved.
 --
 -- Partial bytes:
 --   If rx_dv falls mid-byte the partially shifted sreg is emitted zero-padded
@@ -54,9 +54,13 @@ architecture rtl of jg_rmii_to_bytes is
         sreg         : std_logic_vector(7 downto 0);
         dcnt         : unsigned(1 downto 0);
         first_byte   : std_logic;
+        pend_byte    : std_logic_vector(7 downto 0);
+        pend_valid   : std_logic;
+        pend_sof     : std_logic;
         byte_d       : std_logic_vector(7 downto 0);
         byte_valid_d : std_logic;
         sof_d        : std_logic;
+        eof_d        : std_logic;
     end record;
 
     constant C_REG_RESET : t_reg := (
@@ -65,9 +69,13 @@ architecture rtl of jg_rmii_to_bytes is
         sreg => (others => '0'),
         dcnt => (others => '0'),
         first_byte   => '0',
+        pend_byte => (others => '0'),
+        pend_valid => '0',
+        pend_sof => '0',
         byte_d => (others => '0'),
         byte_valid_d => '0',
-        sof_d        => '0'
+        sof_d        => '0',
+        eof_d        => '0'
     );
 
     signal r   : t_reg;
@@ -78,15 +86,27 @@ begin
     byte_o       <= r.byte_d;
     byte_valid_o <= r.byte_valid_d;
     sof_o        <= r.sof_d;
-    eof_o        <= r.byte_valid_d and not (rmii_crs_dv or r.crs_dv_prev);
+    eof_o        <= r.eof_d;
 
     comb : process (r, rmii_crs_dv, rmii_rxd)
+        variable v_rx_dv : std_logic;
     begin
+        v_rx_dv := rmii_crs_dv or r.crs_dv_prev;
+
         rin <= r;
 
         rin.byte_valid_d <= '0';
         rin.sof_d        <= '0';
+        rin.eof_d        <= '0';
         rin.crs_dv_prev  <= rmii_crs_dv;
+
+        if r.pend_valid = '1' then
+            rin.byte_d       <= r.pend_byte;
+            rin.byte_valid_d <= '1';
+            rin.sof_d        <= r.pend_sof;
+            rin.eof_d        <= not v_rx_dv;
+            rin.pend_valid   <= '0';
+        end if;
 
         case r.state is
 
@@ -107,7 +127,7 @@ begin
                 end if;
 
             when ACTIVE =>
-                if (rmii_crs_dv or r.crs_dv_prev) = '0' then
+                if v_rx_dv = '0' then
                     -- rx_dv gone low. Only emit a partial byte if we were
                     -- mid-byte (dcnt > 0). On a byte boundary dcnt=0 means
                     -- no dibits have been shifted in yet so nothing to emit.
@@ -122,6 +142,8 @@ begin
                             when others => null;
                         end case;
                         rin.byte_valid_d <= '1';
+                        rin.sof_d        <= r.first_byte;
+                        rin.eof_d        <= '1';
                     end if;
                     rin.state      <= IDLE;
                     rin.first_byte <= '0';
@@ -132,9 +154,9 @@ begin
                     rin.dcnt <= r.dcnt + 1;
 
                     if r.dcnt = "11" then
-                        rin.byte_d       <= rmii_rxd & r.sreg(7 downto 2);
-                        rin.byte_valid_d <= '1';
-                        rin.sof_d        <= r.first_byte;
+                        rin.pend_byte    <= rmii_rxd & r.sreg(7 downto 2);
+                        rin.pend_valid   <= '1';
+                        rin.pend_sof     <= r.first_byte;
                         rin.first_byte   <= '0';
                     end if;
                 end if;
